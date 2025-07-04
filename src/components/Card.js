@@ -19,7 +19,7 @@ export default function Card(props) {
         </div>
         <div className="flex justify-between items-center">
           <div className="flex items-center text-gray-500">
-            <FaStar className=" text-yellow-400 mr-1" />
+            <FaStar className=" text-[#f8b400] mr-1" />
 
             {props.rating}
           </div>
