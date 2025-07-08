@@ -2,6 +2,13 @@ import { useParams } from "react-router-dom";
 import { useProductStore } from "../store/useProductStore";
 import { useEffect, useState } from "react";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import { CartContext } from './CartContext';
+import {
+  addToCart,
+  removeFromCart,
+  getCart,
+  updateCartQuantity,
+} from "../utils/cartUtils";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -13,25 +20,46 @@ export default function ProductDetails() {
     fetchProducts();
   }, [fetchProducts]);
 
+  useEffect(() => {
+    // Check if product is in cart
+    const cart = getCart();
+    const cartItem = cart.find((item) => item.id === parseInt(id));
+    if (cartItem) {
+      setIsInCart(true);
+      setQuantity(cartItem.quantity || 1);
+    } else {
+      setIsInCart(false);
+      setQuantity(1);
+    }
+  }, [id, products]);
+
   const product = products.find((p) => p.id === parseInt(id));
 
-  // Mock functions for UI only
   const handleAddToCart = () => {
-    setIsInCart(true);
-    setQuantity(1);
+    if (product) {
+      addToCart(product);
+      setIsInCart(true);
+      setQuantity(1);
+    }
   };
 
   const handleRemoveFromCart = () => {
+    removeFromCart(parseInt(id));
     setIsInCart(false);
+    setQuantity(1);
   };
 
   const handleIncreaseQuantity = () => {
-    setQuantity((prev) => prev + 1);
+    const newQuantity = quantity + 1;
+    setQuantity(newQuantity);
+    updateCartQuantity(parseInt(id), newQuantity);
   };
 
   const handleDecreaseQuantity = () => {
     if (quantity > 1) {
-      setQuantity((prev) => prev - 1);
+      const newQuantity = quantity - 1;
+      setQuantity(newQuantity);
+      updateCartQuantity(parseInt(id), newQuantity);
     } else {
       handleRemoveFromCart();
     }
@@ -103,7 +131,7 @@ export default function ProductDetails() {
                 {product.description}
               </p>
 
-              {/* Cart Buttons - UI Only */}
+              {/* Cart Buttons */}
               <div className="mt-6 flex items-center gap-4">
                 {isInCart ? (
                   <>
