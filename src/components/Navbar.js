@@ -40,7 +40,7 @@ function Navbar() {
         </nav>
 
         {/* Auth Buttons */}
-        <div className="hidden md:flex gap-4">
+        <div className="hidden md:flex gap-4 items-center">
           <NavLink
             to="/login"
             className="text-gray-600 hover:text-blue-600 transition"
