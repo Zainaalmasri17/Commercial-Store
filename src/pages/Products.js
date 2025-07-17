@@ -39,7 +39,7 @@ export default function Products() {
     ));
 
   return (
-    <div className="p-5">
+    <div className="p-5 bg-blue-50">
       <div className="flex flex-wrap justify-center gap-5 w-full box-border">
         {loading ? skeletonRows : showData}
       </div>
