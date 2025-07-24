@@ -1,31 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { getCart, removeFromCart } from "../utils/cartUtils";
 import { Link } from "react-router-dom";
-import { CartContext } from "./CartContext";
+import { useCartStore } from "../store/useCartStore";
 
 export default function Cart() {
-  const [cartItems, setCartItems] = useState([]);
-
-  useEffect(() => {
-    setCartItems(getCart());
-
-    const handleStorageChange = () => {
-      setCartItems(getCart());
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
-
-  const handleRemove = (productId) => {
-    removeFromCart(productId);
-    setCartItems(getCart());
-  };
+  const { cart, removeFromCart } = useCartStore();
 
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6 text-center">عربة التسوق</h1>
-      {cartItems.length === 0 ? (
+      {cart.length === 0 ? (
         <p className="text-gray-600 text-center">
           السلة فارغة.{" "}
           <Link to="/products" className="text-blue-600">
@@ -34,7 +16,7 @@ export default function Cart() {
         </p>
       ) : (
         <div className="space-y-6">
-          {cartItems.map((item) => (
+          {cart.map((item) => (
             <div
               key={item.id}
               className="flex items-center p-4 bg-white shadow-md rounded-lg"
@@ -52,7 +34,7 @@ export default function Cart() {
                 </p>
               </div>
               <button
-                onClick={() => handleRemove(item.id)}
+                onClick={() => removeFromCart(item.id)}
                 className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
               >
                 حذف
