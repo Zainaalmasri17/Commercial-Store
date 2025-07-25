@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { FaSignInAlt, FaUserPlus } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
 function Navbar() {
@@ -44,14 +45,18 @@ function Navbar() {
         <div className="hidden md:flex gap-4 items-center">
           <NavLink
             to="/login"
+
             className="text-gray-600 hover:text-indigo-600 transition"
+
           >
+            <FaSignInAlt />
             Login
           </NavLink>
           <NavLink
             to="/signup"
             className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-md hover:from-purple-600 hover:to-blue-600 transition duration-300 shadow-md"
           >
+            <FaUserPlus />
             Sign Up
           </NavLink>
         </div>
@@ -76,6 +81,7 @@ function Navbar() {
             transition={{ duration: 0.3 }}
             className="md:hidden px-6 pb-4 space-y-2 bg-white shadow-md"
           >
+
             <NavLink to="/" className={navLinkClass} onClick={() => setMenuOpen(false)}>
               Home
             </NavLink>
@@ -89,6 +95,7 @@ function Navbar() {
               Orders
             </NavLink>
             <NavLink to="/login" className={navLinkClass} onClick={() => setMenuOpen(false)}>
+              <FaSignInAlt />
               Login
             </NavLink>
             <NavLink
@@ -96,6 +103,7 @@ function Navbar() {
               className="block bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-md hover:from-purple-600 hover:to-blue-600 transition duration-300"
               onClick={() => setMenuOpen(false)}
             >
+              <FaUserPlus />
               Sign Up
             </NavLink>
           </motion.div>
