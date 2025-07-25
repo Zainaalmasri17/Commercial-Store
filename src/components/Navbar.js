@@ -8,8 +8,8 @@ function Navbar() {
 
   const navLinkClass = ({ isActive }) =>
     isActive
-      ? "text-blue-600 font-semibold"
-      : "text-gray-600 hover:text-blue-500 transition-colors duration-200";
+      ? "text-blue-600 font-semibold "
+      : "text-gray-600 hover:text-blue-500 transition-colors duration-200 ";
 
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
@@ -46,7 +46,7 @@ function Navbar() {
           <NavLink
             to="/login"
 
-            className="text-gray-600 hover:text-indigo-600 transition"
+            className="text-gray-600 hover:text-indigo-600 transition flex items-center gap-2"
 
           >
             <FaSignInAlt />
@@ -54,7 +54,7 @@ function Navbar() {
           </NavLink>
           <NavLink
             to="/signup"
-            className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-md hover:from-purple-600 hover:to-blue-600 transition duration-300 shadow-md"
+            className="flex items-center gap-2 bg-gradient-to-r  from-blue-500 to-purple-500 text-white px-4 py-2 rounded-md hover:from-purple-600 hover:to-blue-600 transition duration-300 shadow-md"
           >
             <FaUserPlus />
             Sign Up
@@ -94,13 +94,13 @@ function Navbar() {
             <NavLink to="/orders" className={navLinkClass} onClick={() => setMenuOpen(false)}>
               Orders
             </NavLink>
-            <NavLink to="/login" className={navLinkClass} onClick={() => setMenuOpen(false)}>
+            <NavLink to="/login" className={navLinkClass + " flex items-center gap-2 px-4 py-2"} onClick={() => setMenuOpen(false)}>
               <FaSignInAlt />
               Login
             </NavLink>
             <NavLink
               to="/signup"
-              className="block bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-md hover:from-purple-600 hover:to-blue-600 transition duration-300"
+              className="flex items-center gap-2  bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-md hover:from-purple-600 hover:to-blue-600 transition duration-300"
               onClick={() => setMenuOpen(false)}
             >
               <FaUserPlus />
