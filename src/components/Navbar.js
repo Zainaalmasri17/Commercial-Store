@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { FaSignInAlt, FaUserPlus } from "react-icons/fa";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -43,14 +44,16 @@ function Navbar() {
         <div className="hidden md:flex gap-4 items-center">
           <NavLink
             to="/login"
-            className="text-gray-600 hover:text-blue-600 transition"
+            className="flex items-center gap-2 text-gray-600 hover:bg-blue-700  hover:text-white  px-4 py-2 rounded-lg  transition-all duration-500"
           >
+            <FaSignInAlt />
             Login
           </NavLink>
           <NavLink
             to="/signup"
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+            className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
           >
+            <FaUserPlus />
             Sign Up
           </NavLink>
         </div>
@@ -100,14 +103,14 @@ function Navbar() {
             className={navLinkClass}
             onClick={() => setMenuOpen(false)}
           >
-            Login
+            <span className="inline-flex items-center gap-2"><FaSignInAlt /> Login</span>
           </NavLink>
           <NavLink
             to="/signup"
             className="block bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
             onClick={() => setMenuOpen(false)}
           >
-            Sign Up
+            <span className="inline-flex items-center gap-2"><FaUserPlus /> Sign Up</span>
           </NavLink>
         </div>
       )}
