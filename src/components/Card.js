@@ -6,13 +6,16 @@ export default function Card(props) {
   const id = props.id;
   return (
     <div
-      className="w-full max-w-[300px] bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 transition-transform duration-200 cursor-pointer"
+      className="w-full max-w-[280px] bg-white rounded-xl overflow-hidden shadow-md hover:-translate-y-1 transition-transform duration-200 cursor-pointer"
       onClick={() => navigate(`/products/${id}`)}
     >
-      <div
-        className="w-full h-[200px] bg-cover bg-center"
-        style={{ backgroundImage: `url(${props.img})` }}
-      />
+      <div className="w-full h-[160px] overflow-hidden flex items-center justify-center">
+        <img
+          src={props.img}
+          alt={props.title}
+          className="w-full h-full object-contain p-2"
+        />
+      </div>
       <div className="p-4">
         <div className="text-lg font-bold text-gray-800 mb-2 line-clamp-2 min-h-[60px]">
           {props.title}

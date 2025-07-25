@@ -1,23 +1,21 @@
-import React, { useState, useEffect, useContext } from "react";
-import { CartContext } from "./CartContext";
+import { useCartStore } from "../store/useCartStore";
+import { useState, useEffect } from "react";
 
 export default function Orders() {
-  const { cart } = useContext(CartContext);
+  const { cart, clearCart } = useCartStore();
   const [order, setOrder] = useState(null);
 
   useEffect(() => {
-    // إنشاء طلب وهمي يحتوي على جميع المنتجات من السلة
     if (cart.length > 0) {
       const mockOrder = {
-        id: `ORDER${Math.floor(Math.random() * 10000)}`, // معرف عشوائي للطلب
-        date: new Date().toLocaleDateString("ar-EG"), // التاريخ بالتنسيق العربي
+        id: `ORDER${Math.floor(Math.random() * 10000)}`,
+        date: new Date().toLocaleDateString("ar-EG"),
         items: cart,
         subtotal: cart.reduce(
           (sum, item) => sum + item.price * item.quantity,
           0
         ),
       };
-      // حساب الخصم (مثلاً 10% إذا كان المجموع الفرعي > 100)
       const discount = mockOrder.subtotal > 100 ? mockOrder.subtotal * 0.1 : 0;
       setOrder({
         ...mockOrder,
@@ -30,10 +28,9 @@ export default function Orders() {
   }, [cart]);
 
   const handleBuy = () => {
-    // وظيفة وهمية لإتمام الشراء
     console.log("Processing purchase:", order);
     alert("تم إتمام الشراء بنجاح! (وظيفة وهمية)");
-    // يمكن إضافة منطق إضافي لاحقًا، مثل إرسال الطلب إلى API
+    clearCart();
   };
 
   return (

@@ -1,69 +1,21 @@
 import { useParams } from "react-router-dom";
 import { useProductStore } from "../store/useProductStore";
-import { useEffect, useState } from "react";
+import { useCartStore } from "../store/useCartStore";
+import { useEffect } from "react";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
-import { CartContext } from './CartContext';
-import {
-  addToCart,
-  removeFromCart,
-  getCart,
-  updateCartQuantity,
-} from "../utils/cartUtils";
 
 export default function ProductDetails() {
   const { id } = useParams();
   const { products, loading, fetchProducts } = useProductStore();
-  const [isInCart, setIsInCart] = useState(false);
-  const [quantity, setQuantity] = useState(1);
+  const { cart, addToCart, removeFromCart, updateQuantity } = useCartStore();
 
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
-  useEffect(() => {
-    // Check if product is in cart
-    const cart = getCart();
-    const cartItem = cart.find((item) => item.id === parseInt(id));
-    if (cartItem) {
-      setIsInCart(true);
-      setQuantity(cartItem.quantity || 1);
-    } else {
-      setIsInCart(false);
-      setQuantity(1);
-    }
-  }, [id, products]);
-
   const product = products.find((p) => p.id === parseInt(id));
-
-  const handleAddToCart = () => {
-    if (product) {
-      addToCart(product);
-      setIsInCart(true);
-      setQuantity(1);
-    }
-  };
-
-  const handleRemoveFromCart = () => {
-    removeFromCart(parseInt(id));
-    setIsInCart(false);
-    setQuantity(1);
-  };
-
-  const handleIncreaseQuantity = () => {
-    const newQuantity = quantity + 1;
-    setQuantity(newQuantity);
-    updateCartQuantity(parseInt(id), newQuantity);
-  };
-
-  const handleDecreaseQuantity = () => {
-    if (quantity > 1) {
-      const newQuantity = quantity - 1;
-      setQuantity(newQuantity);
-      updateCartQuantity(parseInt(id), newQuantity);
-    } else {
-      handleRemoveFromCart();
-    }
-  };
+  const isInCart = cart.some((item) => item.id === product?.id);
+  const cartItem = cart.find((item) => item.id === product?.id);
 
   if (loading) return <div className="text-center py-8">Loading...</div>;
   if (!product)
@@ -72,10 +24,8 @@ export default function ProductDetails() {
   return (
     <div className="min-h-screen bg-blue-50 py-8 px-4">
       <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8">
-        {/* Product Information */}
         <div className="bg-white rounded-xl shadow-md p-6 flex-1">
           <div className="flex flex-col md:flex-row gap-6">
-            {/* Product Image */}
             <div className="w-full md:w-1/2">
               <img
                 src={product.image}
@@ -84,7 +34,6 @@ export default function ProductDetails() {
               />
             </div>
 
-            {/* Product Details */}
             <div className="w-full md:w-1/2 flex flex-col">
               <span className="bg-blue-700 text-white text-xs px-2 py-1 rounded self-start mb-3">
                 {product.category}
@@ -131,27 +80,40 @@ export default function ProductDetails() {
                 {product.description}
               </p>
 
-              {/* Cart Buttons */}
               <div className="mt-6 flex items-center gap-4">
                 {isInCart ? (
                   <>
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={handleDecreaseQuantity}
+                        onClick={() => {
+                          const newQuantity = (cartItem?.quantity || 1) - 1;
+                          if (newQuantity > 0) {
+                            updateQuantity(product.id, newQuantity);
+                          } else {
+                            removeFromCart(product.id);
+                          }
+                        }}
                         className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors"
                       >
                         -
                       </button>
-                      <span className="w-6 text-center">{quantity}</span>
+                      <span className="w-6 text-center">
+                        {cartItem?.quantity || 1}
+                      </span>
                       <button
-                        onClick={handleIncreaseQuantity}
+                        onClick={() => {
+                          updateQuantity(
+                            product.id,
+                            (cartItem?.quantity || 1) + 1
+                          );
+                        }}
                         className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 transition-colors"
                       >
                         +
                       </button>
                     </div>
                     <button
-                      onClick={handleRemoveFromCart}
+                      onClick={() => removeFromCart(product.id)}
                       className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
                     >
                       Remove
@@ -159,7 +121,7 @@ export default function ProductDetails() {
                   </>
                 ) : (
                   <button
-                    onClick={handleAddToCart}
+                    onClick={() => addToCart(product)}
                     className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
                   >
                     Add to Cart
